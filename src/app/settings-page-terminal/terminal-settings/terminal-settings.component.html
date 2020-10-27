@@ -1,0 +1,10 @@
+<div class="header-div">
+  <h2>Terminal Settings</h2>
+</div>
+
+
+<div class="div-content">
+  <app-terminal-listing [terminals]="terminals" (editClicked)="createOrUpdateTerminal($event)"
+    (recordDeleted)="deleteTerminal($event)">
+  </app-terminal-listing>
+</div>

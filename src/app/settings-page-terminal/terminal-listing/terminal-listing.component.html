@@ -1,0 +1,74 @@
+<div class="header-button">
+  <button class="btn btn-primary" (click)="openTerminalModal(editTerminalModal, getDefaultTerminalSettings())">Add
+    Terminal</button>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="center disable-select">Select</th>
+      <th scope="col" class="center disable-select">Terminal Id</th>
+      <th scope="col" class="center disable-select">Alias</th>
+      <th scope="col" class="center disable-select">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="terminals?.length == 0">
+      <td>No data</td>
+    </tr>
+    <tr *ngFor="let terminal of terminals" (click)="onRowClick(terminal, checkBox)"
+      [ngClass]="{ 'highlighted' : terminal.id == selectedTerminal?.id }">
+      <td>
+        <div class="center">
+          <input #checkBox type="checkbox" class="form-check-input checkbox-column" class="debug2" value={{terminal.id}}
+            id={{terminal.id}}>
+          <label class="form-check-label" for={{terminal.id}}></label>
+        </div>
+      </td>
+      <td class="center disable-select">{{ terminal.id }}</td>
+      <td class="center disable-select">{{ terminal.alias }}</td>
+      <td>
+        <div class="center">
+          <button type="button" class="btn btn-primary" (click)="openTerminalModal(editTerminalModal, terminal)">
+            Edit
+          </button>
+          <button type="button" class="btn btn-primary" (click)="delete(terminal)">
+            Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div *ngIf="selectedTerminal != undefined">
+  <br><br><br>
+  <app-terminal-settings-bind (signageAdded)="addSignageToTerminal($event)"
+    (signageDeleted)="removeSignageFromTerminal($event)" (categoryAdded)="addCategoryToTerminal($event)"
+    (categoryDeleted)="removeCategoryFromTerminal($event)" [highlightedTerminal]="selectedTerminal">
+  </app-terminal-settings-bind>
+</div>
+
+<ng-template #editTerminalModal let-modal>
+  <div class="modal-header content">
+    <h5 class="modal-title" id="editProfileLabel">Edit Terminal</h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="editTerminalForm" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="alias" class="col-sm-4 col-form-label">Terminal Alias: </label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="alias" formControlName="alias">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

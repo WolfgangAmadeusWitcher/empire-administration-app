@@ -1,0 +1,26 @@
+
+.btn{
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+
+.header-button {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  float: right;
+  width: 36%;
+  margin: 10px;
+}
+
+
+tr:hover {background-color: burlywood}
+
+tr {
+  cursor: pointer;
+}
+
+.highlighted{
+  background-color: burlywood;
+}

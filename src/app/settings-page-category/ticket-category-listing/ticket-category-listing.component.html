@@ -1,0 +1,90 @@
+<div class="header-button">
+  <button class="btn btn-primary" (click)="openTicketCategoryModal(editTicketCategoryModal, getDefaultTicketCategory())">Add
+    Ticket Category</button>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="center disable-select">Select</th>
+      <th scope="col" class="center disable-select">Id</th>
+      <th scope="col" class="center disable-select">Name</th>
+      <th scope="col" class="center disable-select">Description</th>
+      <th scope="col" class="center disable-select">First Ticket Number</th>
+      <th scope="col" class="center disable-select">Last Ticket Number</th>
+      <th scope="col" class="center disable-select">Priority Coefficient</th>
+      <th scope="col" class="center disable-select">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="ticketCategories?.length == 0">
+      <td>No data</td>
+    </tr>
+    <tr *ngFor="let ticketCategory of ticketCategories" (click)="onRowClick(ticketCategory)"
+      [ngClass]="{ 'highlighted' : ticketCategory.isSelected }">
+      <td>
+        <div class="center">
+          <input type="checkbox" [checked]="ticketCategory.isSelected" class="form-check-input checkbox-column" class="debug2" value={{ticketCategory.isSelected}}
+            id={{ticketCategory.id}}>
+          <label class="form-check-label" for={{ticketCategory.id}}></label>
+        </div>
+      </td>
+      <td class="center disable-select">{{ ticketCategory.id }}</td>
+      <td class="center disable-select">{{ ticketCategory.name }}</td>
+      <td class="center disable-select">{{ ticketCategory.description }}</td>
+      <td class="center disable-select">{{ ticketCategory.firstTicketNumber }}</td>
+      <td class="center disable-select">{{ ticketCategory.lastTicketNumber }}</td>
+      <td class="center disable-select">{{ ticketCategory.priorityCoefficient }}</td>
+      <td>
+        <div class="center">
+          <button type="button" class="btn btn-primary" (click)="openTicketCategoryModal(editTicketCategoryModal, ticketCategory)">
+            Edit
+          </button>
+          <button type="button" class="btn btn-primary" (click)="delete(ticketCategory)">
+            Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<ng-template #editTicketCategoryModal let-modal>
+  <div class="modal-header content">
+    <h5 class="modal-title" id="editProfileLabel">Edit Ticket Category</h5>
+    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="editTicketCategoryForm" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="name" class="col-sm-4 col-form-label">Name: </label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="name" formControlName="name">
+        </div>
+        <label for="description" class="col-sm-4 col-form-label">Description: </label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="description" formControlName="description">
+        </div>
+        <label for="firstTicketNumber" class="col-sm-4 col-form-label">First Ticket Number: </label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="first-ticket-no" formControlName="firstTicketNumber">
+        </div>
+        <label for="lastTicketNumber" class="col-sm-4 col-form-label">Last Ticket Number: </label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="last-ticket-no" formControlName="lastTicketNumber">
+        </div>
+        <label for="priorityCoefficient" class="col-sm-4 col-form-label">Priority Coefficient: </label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="priority-coefficient" formControlName="priorityCoefficient">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

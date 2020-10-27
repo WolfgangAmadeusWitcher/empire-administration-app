@@ -1,0 +1,9 @@
+  <div class="header-div">
+    <h2>Display Settings</h2>
+  </div>
+
+  <div class="div-content">
+    <app-signage-listing [signages]="signages" (editClicked)="createOrUpdateElement($event)"
+      (recordDeleted)="deleteElement($event)">
+    </app-signage-listing>
+  </div>
