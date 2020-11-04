@@ -15,7 +15,9 @@ export class TicketCategoryFormComponent {
 
   constructor(private ticketCategoryService: TicketCategoryService) {
     this.ticketCategoryService.getAll().subscribe((ticketCategoryRecords) => {
-      ticketCategoryRecords.map((ticketCategory) => this.ticketCategories.push(ticketCategory));
+      ticketCategoryRecords.map((ticketCategory) =>
+        this.ticketCategories.push(ticketCategory)
+      );
     });
   }
 
@@ -26,9 +28,10 @@ export class TicketCategoryFormComponent {
       );
       this.ticketCategoryService
         .update(ticketCategory)
-        .subscribe(
-          (ticketCategoryRecord) => (this.ticketCategories[updateIndex] = ticketCategoryRecord)
-        );
+        .subscribe((ticketCategoryRecord) => {
+          ticketCategoryRecord.isSelected = this.ticketCategories[updateIndex].isSelected;
+          this.ticketCategories[updateIndex] = ticketCategoryRecord;
+        });
     } else {
       this.ticketCategoryService
         .create(ticketCategory)
@@ -41,7 +44,9 @@ export class TicketCategoryFormComponent {
   deleteTicketCategory(ticketCategory: TicketCategory): void {
     this.ticketCategoryService.remove(ticketCategory);
 
-    const deleteIndex = this.ticketCategories.findIndex((tc) => tc.id === ticketCategory.id);
+    const deleteIndex = this.ticketCategories.findIndex(
+      (tc) => tc.id === ticketCategory.id
+    );
     this.ticketCategories.splice(deleteIndex, 1);
   }
 }

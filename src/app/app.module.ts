@@ -1,3 +1,4 @@
+import { TerminalCategoryBindModalComponent } from './settings-page-terminal/Modals/terminal-category-bind-modal/terminal-category-bind-modal.component';
 import { TicketCategoryService } from './services/ticket-category.service';
 import { SignageService } from './services/signage.service';
 import { TerminalService } from './services/terminal.service';
@@ -24,6 +25,8 @@ import { SignageListingComponent } from './settings-page-signage/signage-listing
 import { TicketCategoryModalComponent } from './settings-page-category/ticket-category-modal/ticket-category-modal.component';
 import { SettingsPageEditorComponent } from './settings-page-editor/settings-page-editor.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SignageEditModalComponent } from './settings-page-signage/signage-edit-modal/signage-edit-modal.component';
+import { TerminalEditModalComponent } from './settings-page-terminal/Modals/terminal-edit-modal/terminal-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     SignageListingComponent,
     SignageSettingsComponent,
     TicketCategoryModalComponent,
-    SettingsPageEditorComponent
+    SettingsPageEditorComponent,
+    SignageEditModalComponent,
+    TerminalEditModalComponent,
+    TerminalCategoryBindModalComponent,
     ],
   imports: [
     BrowserModule,

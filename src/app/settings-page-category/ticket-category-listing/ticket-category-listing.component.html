@@ -1,5 +1,5 @@
 <div class="header-button">
-  <button class="btn btn-primary" (click)="openTicketCategoryModal(editTicketCategoryModal, getDefaultTicketCategory())">Add
+  <button class="btn btn-primary" (click)="openTicketCategoryModal(getDefaultTicketCategory(), $event)">Add
     Ticket Category</button>
 </div>
 <table class="table">
@@ -23,7 +23,7 @@
       [ngClass]="{ 'highlighted' : ticketCategory.isSelected }">
       <td>
         <div class="center">
-          <input type="checkbox" [checked]="ticketCategory.isSelected" class="form-check-input checkbox-column" class="debug2" value={{ticketCategory.isSelected}}
+          <input type="checkbox" [checked]="ticketCategory.isSelected" class="form-check-input checkbox-column" class="debug2"
             id={{ticketCategory.id}}>
           <label class="form-check-label" for={{ticketCategory.id}}></label>
         </div>
@@ -36,7 +36,7 @@
       <td class="center disable-select">{{ ticketCategory.priorityCoefficient }}</td>
       <td>
         <div class="center">
-          <button type="button" class="btn btn-primary" (click)="openTicketCategoryModal(editTicketCategoryModal, ticketCategory)">
+          <button type="button" class="btn btn-primary" (click)="openTicketCategoryModal(ticketCategory, $event)">
             Edit
           </button>
           <button type="button" class="btn btn-primary" (click)="delete(ticketCategory)">
@@ -47,44 +47,3 @@
     </tr>
   </tbody>
 </table>
-
-
-<ng-template #editTicketCategoryModal let-modal>
-  <div class="modal-header content">
-    <h5 class="modal-title" id="editProfileLabel">Edit Ticket Category</h5>
-    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <form [formGroup]="editTicketCategoryForm" (ngSubmit)="onSubmit()">
-      <div class="form-group row">
-        <label for="name" class="col-sm-4 col-form-label">Name: </label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" id="name" formControlName="name">
-        </div>
-        <label for="description" class="col-sm-4 col-form-label">Description: </label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" id="description" formControlName="description">
-        </div>
-        <label for="firstTicketNumber" class="col-sm-4 col-form-label">First Ticket Number: </label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" id="first-ticket-no" formControlName="firstTicketNumber">
-        </div>
-        <label for="lastTicketNumber" class="col-sm-4 col-form-label">Last Ticket Number: </label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" id="last-ticket-no" formControlName="lastTicketNumber">
-        </div>
-        <label for="priorityCoefficient" class="col-sm-4 col-form-label">Priority Coefficient: </label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" id="priority-coefficient" formControlName="priorityCoefficient">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
-    </form>
-  </div>
-</ng-template>

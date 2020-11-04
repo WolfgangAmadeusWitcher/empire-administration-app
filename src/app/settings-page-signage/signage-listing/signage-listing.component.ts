@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SignageEditModalComponent } from '../signage-edit-modal/signage-edit-modal.component';
 import { Signage } from './../../models/signage.model';
 
 @Component({
@@ -8,79 +9,52 @@ import { Signage } from './../../models/signage.model';
   templateUrl: './signage-listing.component.html',
   styleUrls: ['./signage-listing.component.css']
 })
-export class SignageListingComponent implements OnInit {
+export class SignageListingComponent {
 
-  editSignageForm: FormGroup;
-  @Input() signages: Signage[];
-  @Output() recordDeleted = new EventEmitter<Signage>();
-  @Output() editClicked = new EventEmitter<Signage>();
   selectedElementlId: number;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private modalService: NgbModal
-  ) {}
+  @Input() signages: Signage[];
 
-  getSelectedSignage(): Signage {
-    return this.signages[
-      this.signages.findIndex((sign) => sign.id === this.selectedElementlId)
-    ];
-  }
+  @Output() recordDeleted = new EventEmitter<Signage>();
+  @Output() editClicked = new EventEmitter<Signage>();
 
-  ngOnInit(): void {
-    this.clearModal();
-  }
+
+  constructor(private modalService: NgbModal) {}
 
   getDefaultSignage(): Signage{
     return Signage.getDefaultSignage();
   }
 
-  private clearModal(): void {
-    this.editSignageForm = this.formBuilder.group(Signage.getDefaultSignage());
-  }
 
   public delete(data: Signage): void {
     this.recordDeleted.emit(data);
   }
 
-  public openSignageModal(
-    editSignageModal: FormGroup,
-    signage: Signage
-  ): void {
-    this.modalService.open(editSignageModal, {
+  public openSignageModal(signage: Signage, $event: Event): void {
+    const modalRef = this.modalService.open(SignageEditModalComponent, {
       centered: true,
       backdrop: 'static',
     });
-
-    this.editSignageForm.patchValue({
-      id: signage.id,
-      alias: signage.alias,
-      terminalSignages: signage.terminalSignages,
-    });
+    this.onRowClick(signage);
+    modalRef.componentInstance.selectedSignage = signage;
+    modalRef.componentInstance.formSubmitted = this.editClicked;
+    modalRef.componentInstance.openSignageModal();
+    $event.stopPropagation();
   }
 
-  onSubmit(): void {
-    this.editClicked.emit(this.editSignageForm.value);
-    this.modalService.dismissAll();
-  }
-
-  onRowClick(signageId: number, checkBox): void {
-    this.clearPreviouslySelectedCheckBox();
-    if (this.selectedElementlId !== signageId) {
-      this.selectedElementlId = signageId;
-      checkBox.checked = true;
-    } else {
-      this.selectedElementlId = undefined;
+  onRowClick(signage: Signage): void {
+    if (this.selectedElementlId === undefined) {
+      signage.isSelected = true;
+      this.selectedElementlId = signage.id;
+      return;
     }
-  }
-
-  private clearPreviouslySelectedCheckBox(): void {
-    if (this.selectedElementlId !== undefined) {
-      const previousCheckBox = document.getElementById(
-        this.selectedElementlId.toString()
-      ) as HTMLInputElement;
-
-      previousCheckBox.checked = false;
+    const selectedSignage = this.signages[this.signages.findIndex(s => s.id === this.selectedElementlId)];
+    selectedSignage.isSelected = false;
+    if (this.selectedElementlId === signage.id) {
+      this.selectedElementlId = undefined;
+    } else {
+      signage.isSelected = true;
+      this.selectedElementlId = signage.id;
     }
   }
 }

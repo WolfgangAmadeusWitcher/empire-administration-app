@@ -1,0 +1,27 @@
+<div class="modal-header content">
+  <h5 class="modal-title" id="editProfileLabel">Edit Terminal</h5>
+  <button type="button" class="close" (click)="activeModal.dismiss()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="modalForm" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="alias" class="col-sm-4 col-form-label">Ticket Category to Add: </label>
+      <div class="col-sm-8">
+        <select formControlName="id" id="bindOption" name="bindOption">
+          <option>Pick a Category..</option>
+          <option
+            *ngFor="let category of ticketCategories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Close</button>
+      <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>

@@ -1,34 +1,20 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { TicketCategory } from './../../models/ticket-category.model';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { TicketCategoryModalComponent } from '../ticket-category-modal/ticket-category-modal.component';
 
 @Component({
   selector: 'app-ticket-category-listing',
   templateUrl: './ticket-category-listing.component.html',
   styleUrls: ['./ticket-category-listing.component.css'],
 })
-export class TicketCategoryListingComponent implements OnInit {
-  editTicketCategoryForm: FormGroup;
+export class TicketCategoryListingComponent {
   @Input() ticketCategories: TicketCategory[];
   @Output() recordDeleted = new EventEmitter<TicketCategory>();
   @Output() editClicked = new EventEmitter<TicketCategory>();
-  selectedTicketCategory: TicketCategory;
+  selectedTicketCategoryId: number;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private modalService: NgbModal
-  ) {}
-
-  ngOnInit(): void {
-    this.clearModal();
-  }
-
-  private clearModal(): void {
-    this.editTicketCategoryForm = this.formBuilder.group(
-      TicketCategory.getDefaultTicketCategorySettings()
-    );
-  }
+  constructor(private modalService: NgbModal) {}
 
   getDefaultTicketCategory(): TicketCategory {
     return TicketCategory.getDefaultTicketCategorySettings();
@@ -36,50 +22,36 @@ export class TicketCategoryListingComponent implements OnInit {
 
   public delete(data: TicketCategory): void {
     this.recordDeleted.emit(data);
-    if (this.selectedTicketCategory.id === data.id) {
-      this.selectedTicketCategory = undefined;
+    if (this.selectedTicketCategoryId === data.id) {
+      this.selectedTicketCategoryId = undefined;
     }
   }
 
-  public edit(data: TicketCategory): void {
-    this.editClicked.emit(Object.assign({}, data));
-  }
-
-  onSubmit(): void {
-    this.editClicked.emit(this.editTicketCategoryForm.value);
-    this.modalService.dismissAll();
-  }
-
-  public openTicketCategoryModal(
-    editTicketCategoryModal: FormGroup,
-    ticketCategory: TicketCategory
-  ): void {
-    this.modalService.open(editTicketCategoryModal, {
+  public openTicketCategoryModal(ticketCategory: TicketCategory, $event: Event): void {
+    const modalRef = this.modalService.open(TicketCategoryModalComponent, {
       centered: true,
       backdrop: 'static',
     });
-
-    this.editTicketCategoryForm.patchValue({
-      id: ticketCategory.id,
-      name: ticketCategory.name,
-      description: ticketCategory.description,
-      firstTicketNumber: ticketCategory.firstTicketNumber,
-      lastTicketNumber: ticketCategory.lastTicketNumber,
-      priorityCoefficient: ticketCategory.priorityCoefficient,
-    });
+    this.onRowClick(ticketCategory);
+    modalRef.componentInstance.selectedTicketCategory = ticketCategory;
+    modalRef.componentInstance.formSubmitted = this.editClicked;
+    modalRef.componentInstance.openTicketCategoryModal();
+    $event.stopPropagation();
   }
 
   onRowClick(ticketCategory: TicketCategory): void {
-    if (this.selectedTicketCategory === undefined) {
-      this.selectedTicketCategory = ticketCategory;
-      this.selectedTicketCategory.isSelected = true;
-    } else if (this.selectedTicketCategory.id === ticketCategory.id) {
-      this.selectedTicketCategory.isSelected = false;
-      this.selectedTicketCategory = undefined;
-    } else {
-      this.selectedTicketCategory.isSelected = false;
+    if (this.selectedTicketCategoryId === undefined) {
       ticketCategory.isSelected = true;
-      this.selectedTicketCategory = ticketCategory;
+      this.selectedTicketCategoryId = ticketCategory.id;
+      return;
+    }
+    const selectedTicketCategory = this.ticketCategories[this.ticketCategories.findIndex(tc => tc.id === this.selectedTicketCategoryId)];
+    selectedTicketCategory.isSelected = false;
+    if (this.selectedTicketCategoryId === ticketCategory.id) {
+      this.selectedTicketCategoryId = undefined;
+    } else {
+      ticketCategory.isSelected = true;
+      this.selectedTicketCategoryId = ticketCategory.id;
     }
   }
 }

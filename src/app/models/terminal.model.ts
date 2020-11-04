@@ -8,6 +8,19 @@ export class Terminal{
   breakComment: string;
   terminalCategories: TerminalCategory[];
   terminalSignages: TerminalSignage[];
+  isSelected: boolean;
+
+  static getDefaultTerminal(): Terminal {
+    return {
+      id: undefined,
+      alias: '',
+      status: undefined,
+      breakComment: '',
+      terminalSignages: undefined,
+      terminalCategories: undefined,
+      isSelected: undefined,
+    };
+  }
 }
 
 export enum Status {

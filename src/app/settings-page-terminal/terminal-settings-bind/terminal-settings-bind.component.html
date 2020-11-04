@@ -75,7 +75,7 @@
 
 <div *ngIf="selectedDisplayCategory == 'Categories'">
   <h5> Display Category List for {{ highlightedTerminal.alias }} : </h5>
-  <button class="btn btn-primary" (click)="openTerminalBindModal(addTerminalCategoryBindModal)">Add Category</button>
+  <button class="btn btn-primary" (click)="openTerminalCategoryBindModal(highlightedTerminal)">Add Category</button>
   <br><br><br>
   <table class="content table col-md-12">
     <thead>

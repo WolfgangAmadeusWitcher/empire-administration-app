@@ -1,3 +1,4 @@
+import { TerminalCategoryBindModalComponent } from './../Modals/terminal-category-bind-modal/terminal-category-bind-modal.component';
 import { SignageService } from '../../services/signage.service';
 import { TicketCategoryService } from '../../services/ticket-category.service';
 import { Signage } from './../../models/signage.model';
@@ -89,6 +90,16 @@ export class TerminalSettingsBindComponent implements OnInit {
     this.signageDeleted.emit({ terminalId, signageId });
   }
 
+  openTerminalCategoryBindModal(terminal: Terminal): void{
+    const modalRef = this.modalService.open(TerminalCategoryBindModalComponent, {
+      centered: true,
+      backdrop: 'static',
+    });
+
+    modalRef.componentInstance.ticketCategories = this.getTicketCategoriesByNotContainingIds(terminal.terminalCategories);
+    modalRef.componentInstance.formSubmitted.subscribe(tid => this.onCategoryInsertSubmit(tid.id));
+    modalRef.componentInstance.openTerminalModal();
+  }
   openTerminalBindModal(editTerminalModal: FormGroup): void {
     this.modalService.open(editTerminalModal, {
       centered: true,
@@ -102,17 +113,14 @@ export class TerminalSettingsBindComponent implements OnInit {
     };
   }
 
-  onCategoryInsertSubmit(): void {
-    const categoryId: number = this.addTerminalBindForm.value.id;
-    const selectedCategory = this.ticketCategories.find(
-      (tcktCat) => tcktCat.id.toString() === categoryId.toString()
-    );
+  onCategoryInsertSubmit(ticketCategoryId: number): void {
+    console.log('onCategoryInsertSubmit: ', ticketCategoryId);
+    const selectedCategory = this.ticketCategories.find((tcktCat) => tcktCat.id === ticketCategoryId);
     this.categoryAdded.emit(selectedCategory);
     this.modalService.dismissAll();
   }
 
   onSignageInsertSubmit(): void {
-
     const signageId: number = this.addTerminalBindForm.value.id;
     console.log(signageId);
     const selectedSignage = this.signages.find(

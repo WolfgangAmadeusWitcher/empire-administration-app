@@ -8,7 +8,7 @@ export class TicketCategory {
   lastTicketNumber: number;
   priorityCoefficient: number;
   terminalCategories: TerminalCategory[];
-  isSelected = false;
+  isSelected: boolean;
 
   static getDefaultTicketCategorySettings(): TicketCategory {
     return {

@@ -3,48 +3,27 @@ import { TerminalCategory } from './../../models/terminal-category.model';
 import { Signage } from './../../models/signage.model';
 import { TicketCategory } from './../../models/ticket-category.model';
 import { Terminal } from './../../models/terminal.model';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TerminalService } from 'src/app/services/terminal.service';
+import { TerminalEditModalComponent } from '../Modals/terminal-edit-modal/terminal-edit-modal.component';
 
 @Component({
   selector: 'app-terminal-listing',
   templateUrl: './terminal-listing.component.html',
   styleUrls: ['./terminal-listing.component.css'],
 })
-export class TerminalListingComponent implements OnInit {
-  editTerminalForm: FormGroup;
+export class TerminalListingComponent{
   @Input() terminals: Terminal[];
   @Output() recordDeleted = new EventEmitter<Terminal>();
   @Output() editClicked = new EventEmitter<Terminal>();
   selectedTerminal: Terminal;
+  selectedTerminalId: number;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private modalService: NgbModal,
-    private terminalBindingService: TerminalService
-  ) {}
-
-  ngOnInit(): void {
-    this.clearModal();
-  }
-
-  private clearModal(): void {
-    this.editTerminalForm = this.formBuilder.group(
-      this.getDefaultTerminalSettings()
-    );
-  }
+  constructor(private modalService: NgbModal, private terminalBindingService: TerminalService) {}
 
   getDefaultTerminalSettings(): Terminal {
-    return {
-      id: undefined,
-      alias: '',
-      status: undefined,
-      breakComment: '',
-      terminalSignages: undefined,
-      terminalCategories: undefined,
-    };
+    return Terminal.getDefaultTerminal();
   }
 
   public delete(data: Terminal): void {
@@ -54,23 +33,16 @@ export class TerminalListingComponent implements OnInit {
     }
   }
 
-  public openTerminalModal(
-    editTerminalModal: FormGroup,
-    terminal: Terminal
-  ): void {
-    this.modalService.open(editTerminalModal, {
+  public openTerminalModal(terminal: Terminal, $event: Event): void {
+    const modalRef = this.modalService.open(TerminalEditModalComponent, {
       centered: true,
       backdrop: 'static',
     });
-
-    this.editTerminalForm.patchValue({
-      id: terminal.id,
-      alias: terminal.alias,
-      status: terminal.status,
-      breakComment: terminal.breakComment,
-      terminalSignages: terminal.terminalSignages,
-      terminalCategories: terminal.terminalCategories,
-    });
+    this.onRowClick(terminal);
+    modalRef.componentInstance.selectedTerminal = terminal;
+    modalRef.componentInstance.formSubmitted = this.editClicked;
+    modalRef.componentInstance.openTerminalModal();
+    $event.stopPropagation();
   }
 
   addCategoryToTerminal(addedTicketCategory: TicketCategory): void {
@@ -127,28 +99,20 @@ export class TerminalListingComponent implements OnInit {
     this.selectedTerminal.terminalSignages.splice(deleteIndex, 1);
   }
 
-  onSubmit(): void {
-    this.editClicked.emit(this.editTerminalForm.value);
-    this.modalService.dismissAll();
-  }
-
-  onRowClick(terminal: Terminal, checkBox): void {
-    this.clearPreviouslySelectedCheckBox();
-    if (this.selectedTerminal?.id !== terminal.id) {
-      this.selectedTerminal = terminal;
-      checkBox.checked = true;
-    } else {
-      this.selectedTerminal = undefined;
+  onRowClick(terminal: Terminal): void {
+    this.selectedTerminal = terminal;
+    if (this.selectedTerminalId === undefined) {
+      terminal.isSelected = true;
+      this.selectedTerminalId = terminal.id;
+      return;
     }
-  }
-
-  private clearPreviouslySelectedCheckBox(): void {
-    if (this.selectedTerminal !== undefined) {
-      const previousCheckBox = document.getElementById(
-        this.selectedTerminal.id.toString()
-      ) as HTMLInputElement;
-
-      previousCheckBox.checked = false;
+    const selectedTerminal = this.terminals[this.terminals.findIndex(t => t.id === this.selectedTerminalId)];
+    selectedTerminal.isSelected = false;
+    if (this.selectedTerminalId === terminal.id) {
+      this.selectedTerminalId = undefined;
+    } else {
+      terminal.isSelected = true;
+      this.selectedTerminalId = terminal.id;
     }
   }
 }

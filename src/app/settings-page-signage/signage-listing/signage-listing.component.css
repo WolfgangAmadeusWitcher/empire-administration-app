@@ -1,10 +1,14 @@
+.highlighted{
+  background-color: burlywood;
+}
 
 .btn{
   margin-right: 2px;
   margin-left: 2px;
 }
-
-
+tr {
+  cursor: pointer;
+}
 .header-button {
   box-sizing: border-box;
   position: relative;

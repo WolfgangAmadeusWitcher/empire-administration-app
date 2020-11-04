@@ -5,10 +5,9 @@ import { Signage } from './../../models/signage.model';
 @Component({
   selector: 'app-signage-settings',
   templateUrl: './signage-settings.component.html',
-  styleUrls: ['./signage-settings.component.css']
+  styleUrls: ['./signage-settings.component.css'],
 })
 export class SignageSettingsComponent {
-
   public signages: Signage[] = [];
 
   constructor(public signageService: SignageService) {
@@ -18,22 +17,16 @@ export class SignageSettingsComponent {
   }
 
   public createOrUpdateElement(signage: Signage): void {
-    console.log(signage);
     if (signage.id !== undefined) {
-      const updateIndex = this.signages.findIndex(
-        (tc) => tc.id === signage.id
-      );
-      this.signageService
-        .update(signage)
-        .subscribe(
-          (signageRecord) => (this.signages[updateIndex] = signageRecord)
-        );
+      const updateIndex = this.signages.findIndex((tc) => tc.id === signage.id);
+      this.signageService.update(signage).subscribe((signageRecord) => {
+        signageRecord.isSelected = this.signages[updateIndex].isSelected;
+        this.signages[updateIndex] = signageRecord;
+      });
     } else {
-      this.signageService
-        .create(signage)
-        .subscribe((signageRecord) => {
-          this.signages.push(signageRecord);
-        });
+      this.signageService.create(signage).subscribe((signageRecord) => {
+        this.signages.push(signageRecord);
+      });
     }
   }
 
