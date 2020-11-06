@@ -13,7 +13,7 @@
 <div *ngIf="selectedDisplayCategory == 'Signages'">
 
   <h5> Display Signage List for {{ highlightedTerminal.alias }} : </h5>
-  <button class="btn btn-primary" (click)="openTerminalBindModal(addTerminalSignageBindModal)">Add Signage</button>
+  <button class="btn btn-primary" (click)="openTerminalSignageBindModal(highlightedTerminal)">Add Signage</button>
   <br><br><br>
   <table class="content table col-md-12">
     <thead>
@@ -38,38 +38,6 @@
     </tbody>
   </table>
 </div>
-
-<!---Signage Insert Modal-->
-
-<ng-template #addTerminalSignageBindModal let-modal>
-  <div class="modal-header content">
-    <h5 class="modal-title" id="editProfileLabel">Add Signage for {{ highlightedTerminal.alias }}</h5>
-    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <form [formGroup]="addTerminalBindForm" (ngSubmit)="onSignageInsertSubmit()">
-      <div class="form-group row">
-        <label for="alias" class="col-sm-4 col-form-label">Signage to Add: </label>
-        <div class="col-sm-8">
-          <select formControlName="id" id="bindOption" name="bindOption">
-            <option>Pick a Signage..</option>
-            <option *ngFor="let signage of getSignagesByNotContainingIds(highlightedTerminal.terminalSignages)"
-            [value]="signage.id" [value]="signage.id">
-              {{ signage.alias }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
-    </form>
-  </div>
-</ng-template>
 
 <!---Category Listing-->
 
@@ -103,34 +71,3 @@
   </table>
 </div>
 
-  <!---Category Insert Modal-->
-
-<ng-template #addTerminalCategoryBindModal let-modal>
-  <div class="modal-header content">
-    <h5 class="modal-title" id="editProfileLabel">Edit Terminal</h5>
-    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <form [formGroup]="addTerminalBindForm" (ngSubmit)="onCategoryInsertSubmit()">
-      <div class="form-group row">
-        <label for="alias" class="col-sm-4 col-form-label">Ticket Category to Add: </label>
-        <div class="col-sm-8">
-          <select formControlName="id" id="bindOption" name="bindOption">
-            <option>Pick a Category..</option>
-            <option
-              *ngFor="let category of getTicketCategoriesByNotContainingIds(highlightedTerminal.terminalCategories)" [value]="category.id">
-              {{ category.name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
-    </form>
-  </div>
-</ng-template>

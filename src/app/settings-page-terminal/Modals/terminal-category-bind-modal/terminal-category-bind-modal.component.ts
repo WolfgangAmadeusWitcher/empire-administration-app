@@ -1,3 +1,4 @@
+import { Terminal } from './../../../models/terminal.model';
 import { TicketCategory } from './../../../models/ticket-category.model';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -13,6 +14,7 @@ export class TerminalCategoryBindModalComponent {
   modalForm: FormGroup;
 
   @Input() ticketCategories: TicketCategory[];
+  @Input() terminal: Terminal;
   @Output() formSubmitted = new EventEmitter<number>();
 
   constructor(private formBuilder: FormBuilder, public activeModal: NgbActiveModal) { }

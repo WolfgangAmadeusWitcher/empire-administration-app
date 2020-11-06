@@ -1,9 +1,10 @@
+import { TerminalSettingsComponent } from './../terminal-settings/terminal-settings.component';
 import { TerminalSignage } from './../../models/terminal-signage.model';
 import { TerminalCategory } from './../../models/terminal-category.model';
 import { Signage } from './../../models/signage.model';
 import { TicketCategory } from './../../models/ticket-category.model';
 import { Terminal } from './../../models/terminal.model';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TerminalService } from 'src/app/services/terminal.service';
 import { TerminalEditModalComponent } from '../Modals/terminal-edit-modal/terminal-edit-modal.component';
@@ -13,14 +14,16 @@ import { TerminalEditModalComponent } from '../Modals/terminal-edit-modal/termin
   templateUrl: './terminal-listing.component.html',
   styleUrls: ['./terminal-listing.component.css'],
 })
-export class TerminalListingComponent{
-  @Input() terminals: Terminal[];
+export class TerminalListingComponent {
   @Output() recordDeleted = new EventEmitter<Terminal>();
   @Output() editClicked = new EventEmitter<Terminal>();
   selectedTerminal: Terminal;
   selectedTerminalId: number;
 
-  constructor(private modalService: NgbModal, private terminalBindingService: TerminalService) {}
+  constructor(
+    private modalService: NgbModal,
+    private terminalBindingService: TerminalService
+  ) {}
 
   getDefaultTerminalSettings(): Terminal {
     return Terminal.getDefaultTerminal();
@@ -106,7 +109,12 @@ export class TerminalListingComponent{
       this.selectedTerminalId = terminal.id;
       return;
     }
-    const selectedTerminal = this.terminals[this.terminals.findIndex(t => t.id === this.selectedTerminalId)];
+    const selectedTerminal =
+      TerminalSettingsComponent.terminals[
+        TerminalSettingsComponent.terminals.findIndex(
+          (t) => t.id === this.selectedTerminalId
+        )
+      ];
     selectedTerminal.isSelected = false;
     if (this.selectedTerminalId === terminal.id) {
       this.selectedTerminalId = undefined;
@@ -114,5 +122,9 @@ export class TerminalListingComponent{
       terminal.isSelected = true;
       this.selectedTerminalId = terminal.id;
     }
+  }
+
+  getTerminals(): Terminal[]{
+    return TerminalSettingsComponent.terminals;
   }
 }

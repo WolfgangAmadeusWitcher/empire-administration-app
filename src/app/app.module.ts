@@ -1,3 +1,4 @@
+import { TerminalSignageBindModalComponent } from './settings-page-terminal/Modals/terminal-signage-bind-modal/terminal-signage-bind-modal.component';
 import { TerminalCategoryBindModalComponent } from './settings-page-terminal/Modals/terminal-category-bind-modal/terminal-category-bind-modal.component';
 import { TicketCategoryService } from './services/ticket-category.service';
 import { SignageService } from './services/signage.service';
@@ -44,6 +45,7 @@ import { TerminalEditModalComponent } from './settings-page-terminal/Modals/term
     SignageEditModalComponent,
     TerminalEditModalComponent,
     TerminalCategoryBindModalComponent,
+    TerminalSignageBindModalComponent
     ],
   imports: [
     BrowserModule,

@@ -1,62 +1,43 @@
+import { TerminalSettingsComponent } from './../terminal-settings/terminal-settings.component';
 import { TerminalCategoryBindModalComponent } from './../Modals/terminal-category-bind-modal/terminal-category-bind-modal.component';
-import { SignageService } from '../../services/signage.service';
-import { TicketCategoryService } from '../../services/ticket-category.service';
 import { Signage } from './../../models/signage.model';
 import { TerminalSignage } from './../../models/terminal-signage.model';
 import { TerminalCategory } from './../../models/terminal-category.model';
 import { TicketCategory } from './../../models/ticket-category.model';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Terminal } from './../../models/terminal.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TerminalSignageBindModalComponent } from '../Modals/terminal-signage-bind-modal/terminal-signage-bind-modal.component';
 
 @Component({
   selector: 'app-terminal-settings-bind',
   templateUrl: './terminal-settings-bind.component.html',
   styleUrls: ['./terminal-settings-bind.component.css'],
 })
-export class TerminalSettingsBindComponent implements OnInit {
+export class TerminalSettingsBindComponent {
   @Input() highlightedTerminal: Terminal;
   @Output() categoryAdded = new EventEmitter<TicketCategory>();
   @Output() categoryDeleted = new EventEmitter<TerminalCategory>();
   @Output() signageAdded = new EventEmitter<Signage>();
   @Output() signageDeleted = new EventEmitter<TerminalSignage>();
-  addTerminalBindForm: FormGroup;
   selectedDisplayCategory: string;
-  ticketCategories: TicketCategory[] = [];
-  signages: Signage[] = [];
 
   selectOptions: string[] = ['Categories', 'Signages'];
 
   constructor(
-    private formBuilder: FormBuilder,
-    private modalService: NgbModal,
-    private ticketCategoryService: TicketCategoryService,
-    private signageService: SignageService
-  ) {
-    this.signageService
-    .getAll()
-    .subscribe((signagesResponse) => {
-      signagesResponse.map((signage) => this.signages.push(signage));
-    });
-
-    this.ticketCategoryService
-      .getAll()
-      .subscribe((categoriesResponse) => {
-        categoriesResponse.map((category) => this.ticketCategories.push(category));
-      });
-  }
+    private modalService: NgbModal
+  ) {}
 
   getTicketCategoriesByIds(
     terminalCategories: TerminalCategory[]
   ): TicketCategory[] {
-    return this.ticketCategories.filter((category) =>
+    return TerminalSettingsComponent.ticketCategories.filter((category) =>
       terminalCategories.some((tr) => tr.ticketCategoryId === category.id)
     );
   }
 
   getSignagesByIds(terminalSignages: TerminalSignage[]): Signage[] {
-    return this.signages.filter((signage) =>
+    return TerminalSettingsComponent.signages.filter((signage) =>
       terminalSignages.some((tr) => tr.signageId === signage.id)
     );
   }
@@ -64,7 +45,7 @@ export class TerminalSettingsBindComponent implements OnInit {
   getTicketCategoriesByNotContainingIds(
     terminalCategories: TerminalCategory[]
   ): TicketCategory[] {
-    return this.ticketCategories.filter(
+    return TerminalSettingsComponent.ticketCategories.filter(
       (category) =>
         !terminalCategories.some((tr) => tr.ticketCategoryId === category.id)
     );
@@ -73,7 +54,7 @@ export class TerminalSettingsBindComponent implements OnInit {
   getSignagesByNotContainingIds(
     terminalSignages: TerminalSignage[]
   ): Signage[] {
-    return this.signages.filter(
+    return TerminalSettingsComponent.signages.filter(
       (signage) =>
         !terminalSignages.some((trSign) => trSign.signageId === signage.id)
     );
@@ -83,61 +64,65 @@ export class TerminalSettingsBindComponent implements OnInit {
     this.selectedDisplayCategory = selected;
   }
 
-  removeCategoryFromTerminal(ticketCategoryId: number, terminalId: number): void {
+  removeCategoryFromTerminal(
+    ticketCategoryId: number,
+    terminalId: number
+  ): void {
     this.categoryDeleted.emit({ terminalId, ticketCategoryId });
   }
   removeSignageFromTerminal(signageId: number, terminalId: number): void {
     this.signageDeleted.emit({ terminalId, signageId });
   }
 
-  openTerminalCategoryBindModal(terminal: Terminal): void{
-    const modalRef = this.modalService.open(TerminalCategoryBindModalComponent, {
-      centered: true,
-      backdrop: 'static',
-    });
+  openTerminalCategoryBindModal(terminal: Terminal): void {
+    const modalRef = this.modalService.open(
+      TerminalCategoryBindModalComponent,
+      {
+        centered: true,
+        backdrop: 'static',
+      }
+    );
 
-    modalRef.componentInstance.ticketCategories = this.getTicketCategoriesByNotContainingIds(terminal.terminalCategories);
-    modalRef.componentInstance.formSubmitted.subscribe(tid => this.onCategoryInsertSubmit(tid.id));
+    modalRef.componentInstance.terminal = terminal;
+    modalRef.componentInstance.ticketCategories = this.getTicketCategoriesByNotContainingIds(
+      terminal.terminalCategories
+    );
+    modalRef.componentInstance.formSubmitted.subscribe((tid) => {
+      this.onCategoryInsertSubmit(tid.id);
+    });
     modalRef.componentInstance.openTerminalModal();
   }
-  openTerminalBindModal(editTerminalModal: FormGroup): void {
-    this.modalService.open(editTerminalModal, {
-      centered: true,
-      backdrop: 'static',
-    });
-  }
 
-  getDefaultCategory(): any {
-    return {
-      id: '',
-    };
+  openTerminalSignageBindModal(terminal: Terminal): void{
+    const modalRef = this.modalService.open(
+      TerminalSignageBindModalComponent,
+      {
+        centered: true,
+        backdrop: 'static',
+      }
+    );
+
+    modalRef.componentInstance.terminal = terminal;
+    modalRef.componentInstance.signages = this.getSignagesByNotContainingIds(terminal.terminalSignages);
+    modalRef.componentInstance.formSubmitted.subscribe((sid) => {
+      this.onSignageInsertSubmit(sid.id);
+    });
+    modalRef.componentInstance.openTerminalModal();
   }
 
   onCategoryInsertSubmit(ticketCategoryId: number): void {
-    console.log('onCategoryInsertSubmit: ', ticketCategoryId);
-    const selectedCategory = this.ticketCategories.find((tcktCat) => tcktCat.id === ticketCategoryId);
+    const selectedCategory = TerminalSettingsComponent.ticketCategories.find(
+      (tcktCat) => Number(tcktCat.id) === Number(ticketCategoryId)
+    );
     this.categoryAdded.emit(selectedCategory);
     this.modalService.dismissAll();
   }
 
-  onSignageInsertSubmit(): void {
-    const signageId: number = this.addTerminalBindForm.value.id;
-    console.log(signageId);
-    const selectedSignage = this.signages.find(
-      (sign) => sign.id.toString() === signageId.toString()
+  onSignageInsertSubmit(signageId: number): void {
+    const selectedSignage = TerminalSettingsComponent.signages.find(
+      (sign) => Number(sign.id) === Number(signageId)
     );
-    console.log(selectedSignage);
     this.signageAdded.emit(selectedSignage);
     this.modalService.dismissAll();
-  }
-
-  ngOnInit(): void {
-    this.clearModal();
-  }
-
-  private clearModal(): void {
-    this.addTerminalBindForm = this.formBuilder.group(
-      this.getDefaultCategory()
-    );
   }
 }

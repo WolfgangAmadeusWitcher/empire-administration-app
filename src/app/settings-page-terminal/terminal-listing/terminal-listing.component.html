@@ -12,10 +12,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngIf="terminals?.length == 0">
+    <tr *ngIf="getTerminals()?.length == 0">
       <td>No data</td>
     </tr>
-    <tr *ngFor="let terminal of terminals" (click)="onRowClick(terminal)" [ngClass]="{ 'highlighted' : terminal.isSelected }">
+    <tr *ngFor="let terminal of getTerminals()" (click)="onRowClick(terminal)" [ngClass]="{ 'highlighted' : terminal.isSelected }">
       <td>
         <div class="center">
           <input type="checkbox" [checked]="terminal.isSelected" class="form-check-input checkbox-column" class="debug2" id={{terminal.id}}>

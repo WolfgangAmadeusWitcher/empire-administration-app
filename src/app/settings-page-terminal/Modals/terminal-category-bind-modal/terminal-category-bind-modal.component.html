@@ -1,5 +1,5 @@
 <div class="modal-header content">
-  <h5 class="modal-title" id="editProfileLabel">Edit Terminal</h5>
+  <h5 class="modal-title" id="editProfileLabel">Add Ticket Category for {{ terminal.alias }}</h5>
   <button type="button" class="close" (click)="activeModal.dismiss()" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -10,8 +10,8 @@
     <div class="form-group row">
       <label for="alias" class="col-sm-4 col-form-label">Ticket Category to Add: </label>
       <div class="col-sm-8">
-        <select formControlName="id" id="bindOption" name="bindOption">
-          <option>Pick a Category..</option>
+        <select formControlName="id" id="bindOption" name="bindOption" defaultValue="1">
+          <option value="" disabled>Pick a Category..</option>
           <option
             *ngFor="let category of ticketCategories" [value]="category.id">
             {{ category.name }}
