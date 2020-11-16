@@ -124,9 +124,6 @@ export class AngularEditorComponent implements OnInit, ControlValueAccessor, Aft
     }
   }
 
-  AddDinamicField(){
-    this.editorService.insertHtml("<b>test</b>")
-  }
 
   /**
    * Executed command from editor header buttons

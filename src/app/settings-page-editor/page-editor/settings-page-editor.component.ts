@@ -32,20 +32,20 @@ export class SettingsPageEditorComponent implements OnInit {
       ['link','unlink','insertVideo','insertHorizontalRule','heading'],
       ['removeFormat','undo', 'redo','superscript', 'subscript','strikeThrough'],
       ['indent', 'outdent','insertUnorderedList', 'insertOrderedList'],
-      ['backgroundColor','textColor','customClasses', 'justifyFull','toggleEditorMode']
+      ['backgroundColor','textColor', 'justifyFull','toggleEditorMode']
     ],
     customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
+        name: 'CreatedTime',
+        class: 'CreatedTime',
       },
       {
-        name: 'redText',
-        class: 'redText'
+        name: 'TicketNumber',
+        class: 'TicketNumber'
       },
       {
-        name: 'titleText',
-        class: 'titleText',
+        name: 'CategoryName',
+        class: 'CategoryName',
         tag: 'h1',
       },
     ],
