@@ -1,4 +1,4 @@
-import { SettingsPageEditorComponent } from './settings-page-editor/settings-page-editor.component';
+import { SettingsPageEditorComponent } from './settings-page-editor/page-editor/settings-page-editor.component';
 import { TicketCategoryFormComponent } from './settings-page-category/ticket-category-form/ticket-category-form.component';
 import { SignageSettingsComponent } from './settings-page-signage/signage-settings/signage-settings.component';
 import { TerminalSettingsComponent } from './settings-page-terminal/terminal-settings/terminal-settings.component';

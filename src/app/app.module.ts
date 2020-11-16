@@ -24,10 +24,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TerminalSettingsBindComponent } from './settings-page-terminal/terminal-settings-bind/terminal-settings-bind.component';
 import { SignageListingComponent } from './settings-page-signage/signage-listing/signage-listing.component';
 import { TicketCategoryModalComponent } from './settings-page-category/ticket-category-modal/ticket-category-modal.component';
-import { SettingsPageEditorComponent } from './settings-page-editor/settings-page-editor.component';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SettingsPageEditorComponent } from './settings-page-editor/page-editor/settings-page-editor.component';
+import { AngularEditorModule } from './settings-page-editor/text-editor/angular-editor.module';
 import { SignageEditModalComponent } from './settings-page-signage/signage-edit-modal/signage-edit-modal.component';
 import { TerminalEditModalComponent } from './settings-page-terminal/Modals/terminal-edit-modal/terminal-edit-modal.component';
+import { PrintTemplateService } from './services/print-template.service';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { TerminalEditModalComponent } from './settings-page-terminal/Modals/term
     NgbModule,
     AngularEditorModule
   ],
-  providers: [SignalRService, NgbModule, FormBuilder, TerminalService, SignageService, TicketCategoryService],
+  providers: [SignalRService, NgbModule, FormBuilder, TerminalService, SignageService, TicketCategoryService,PrintTemplateService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

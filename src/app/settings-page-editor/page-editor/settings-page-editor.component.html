@@ -1,0 +1,13 @@
+<div class="container">
+  <angular-editor [(ngModel)]="htmlContent" [config]="config" (click)="onClick()"></angular-editor>
+
+</div>
+
+<div align="center" class="header-button">
+  <button class="btn btn-primary" (click)="createTemplate()">Create Template</button>
+</div>
+<br>
+<h5 align="center" class="html-header">HTML Output</h5>
+<div class="html">
+  {{ htmlContent }}
+</div>
