@@ -14,7 +14,7 @@ export class PrintTemplateService {
 
   sendTemplate(obj: PrintTemplate): Observable<PrintTemplate> {
     return this.http.post<PrintTemplate>(
-      this.url + '/SendPrintTemplate',
+      this.url + '/CreateTemplate',
       obj,
       {
         headers: this.headers,

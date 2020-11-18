@@ -29,7 +29,7 @@ export class SettingsPageEditorComponent implements OnInit {
     defaultFontName: 'Comic Sans MS',
     defaultFontSize: '5',
     toolbarHiddenButtons: [
-      ['link','unlink','insertVideo','insertHorizontalRule','heading'],
+      ['insertVideo','insertHorizontalRule','heading'],
       ['removeFormat','undo', 'redo','superscript', 'subscript','strikeThrough'],
       ['indent', 'outdent','insertUnorderedList', 'insertOrderedList'],
       ['backgroundColor','textColor', 'justifyFull','toggleEditorMode']

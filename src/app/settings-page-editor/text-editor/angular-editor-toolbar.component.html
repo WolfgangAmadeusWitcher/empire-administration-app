@@ -62,15 +62,17 @@
     <ae-select class="select-heading" [options]="headings" [(ngModel)]="block" (change)="triggerCommand(block)"
       [disabled]="htmlMode" [hidden]="isButtonHidden('heading')" tabindex="-1"></ae-select>
   </div>
+
   <div class="angular-editor-toolbar-set">
-    <button [id]="'link-'+id" type="button" class="angular-editor-button" (click)="insertUrl()" title="Insert Link"
-      [disabled]="isLinkButtonDisabled" [hidden]="isButtonHidden('link')" tabindex="-1">
-      <i class="fa fa-map-pin"></i>
-    </button>
-    <button [id]="'unlink-'+id" type="button" class="angular-editor-button" (click)="triggerCommand('unlink')"
-      title="Unlink" [disabled]="htmlMode || !linkSelected" [hidden]="isButtonHidden('unlink')" tabindex="-1">
-      <i class="fa fa-chain-broken"></i>
-    </button>
+    <ae-select class="select-font" [options]="fonts" [(ngModel)]="fontName" (change)="setFontName(fontName)"
+      [disabled]="htmlMode" [hidden]="isButtonHidden('fontName')" tabindex="-1"></ae-select>
+    <ae-select class="select-font-size" [options]="fontSizes" [(ngModel)]="fontSize" (change)="setFontSize(fontSize)"
+      [disabled]="htmlMode" [hidden]="isButtonHidden('fontSize')" tabindex="-1">
+    </ae-select>
+  </div>
+
+  <div class="angular-editor-toolbar-set">
+
     <input style="display: none" accept="image/*" type="file" (change)="onFileChanged($event)" #fileInput>
     <button [id]="'insertImage-'+id" type="button" class="angular-editor-button" (click)="focus(); fileInput.click()"
       title="Insert Image" [disabled]="htmlMode" [hidden]="isButtonHidden('insertImage')" tabindex="-1"><i
@@ -83,15 +85,8 @@
       (click)="triggerCommand('insertHorizontalRule')" [disabled]="htmlMode"
       [hidden]="isButtonHidden('insertHorizontalRule')" tabindex="-1"><i class="fa fa-minus"></i></button>
   </div>
-  <div class="angular-editor-toolbar-set">
 
 
-    <ae-select class="select-font" [options]="fonts" [(ngModel)]="fontName" (change)="setFontName(fontName)"
-      [disabled]="htmlMode" [hidden]="isButtonHidden('fontName')" tabindex="-1"></ae-select>
-    <ae-select class="select-font-size" [options]="fontSizes" [(ngModel)]="fontSize" (change)="setFontSize(fontSize)"
-      [disabled]="htmlMode" [hidden]="isButtonHidden('fontSize')" tabindex="-1">
-    </ae-select>
-  </div>
 
   <div class="angular-editor-toolbar-set">
     <input style="display: none" type="color" (change)="insertColor(fgInput.value, 'textColor')" #fgInput>
@@ -120,9 +115,23 @@
       (click)="triggerCommand('toggleEditorMode')" [hidden]="isButtonHidden('toggleEditorMode')" tabindex="-1"><i
         class='fa fa-code'></i></button>
   </div>
-  <div *ngIf="_customClasses" class="angular-editor-toolbar-set">
+
+  <div class="angular-editor-toolbar-set">
     <ae-select class="select-custom-style" [options]="customClassList" [(ngModel)]="customClassId"
       (change)="setCustomClass(customClassId)" [disabled]="htmlMode" [hidden]="isButtonHidden('customClasses')"
       tabindex="-1"></ae-select>
   </div>
+
+  <div class="angular-editor-toolbar-set">
+    <button [id]="'link-'+id" type="button" class="angular-editor-button" (click)="insertUrl()" title="Insert Link"
+       [hidden]="isButtonHidden('link')" tabindex="-1">
+      <i class="fa fa-plus"></i>
+    </button>
+    <button [id]="'unlink-'+id" type="button" class="angular-editor-button" (click)="triggerCommand('unlink')"
+      title="Unlink" [disabled]="htmlMode || !linkSelected" [hidden]="isButtonHidden('unlink')" tabindex="-1">
+      <i class="fa fa-minus"></i>
+    </button>
+
+  </div>
+
 </div>

@@ -35,6 +35,7 @@ export class TicketCategoryListingComponent {
     this.onRowClick(ticketCategory);
     modalRef.componentInstance.selectedTicketCategory = ticketCategory;
     modalRef.componentInstance.formSubmitted = this.editClicked;
+
     modalRef.componentInstance.openTicketCategoryModal();
     $event.stopPropagation();
   }

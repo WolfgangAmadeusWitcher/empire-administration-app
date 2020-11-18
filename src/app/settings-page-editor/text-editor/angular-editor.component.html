@@ -1,6 +1,6 @@
 <div class="angular-editor" #angularEditor [style.width]="config.width" [style.minWidth]="config.minWidth">
 
-  <div style="width: 300px;border-style:   groove; ">
+  <div style="width: 420px;border-style:   groove; ">
     <angular-editor-toolbar *ngIf="config.toolbarPosition === 'top'" #editorToolbar [id]="id"
       [uploadUrl]="config.uploadUrl" [upload]="config.upload"
       [showToolbar]="config.showToolbar !== undefined ? config.showToolbar : true" [fonts]="getFonts()"
@@ -10,7 +10,7 @@
 
   </div>
 
-  <div style="position:relative; left:38px;"  class="angular-editor-wrapper" #editorWrapper>
+  <div style="position:relative; left:90px;"  class="angular-editor-wrapper" #editorWrapper>
     <div #editor  class="angular-editor-textarea" [attr.contenteditable]="config.editable"
       [attr.tabindex]="disabled ? -1 : tabIndex" [attr.translate]="config.translate"
       [attr.spellcheck]="config.spellcheck" [style.height]="config.height" [style.minHeight]="config.minHeight"

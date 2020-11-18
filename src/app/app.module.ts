@@ -29,6 +29,7 @@ import { AngularEditorModule } from './settings-page-editor/text-editor/angular-
 import { SignageEditModalComponent } from './settings-page-signage/signage-edit-modal/signage-edit-modal.component';
 import { TerminalEditModalComponent } from './settings-page-terminal/Modals/terminal-edit-modal/terminal-edit-modal.component';
 import { PrintTemplateService } from './services/print-template.service';
+import { DynamicFieldModalComponent } from './settings-page-editor/dynamic-field-modal/dynamic-field-modal.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { PrintTemplateService } from './services/print-template.service';
     SignageEditModalComponent,
     TerminalEditModalComponent,
     TerminalCategoryBindModalComponent,
-    TerminalSignageBindModalComponent
+    TerminalSignageBindModalComponent,
+    DynamicFieldModalComponent
     ],
   imports: [
     BrowserModule,
